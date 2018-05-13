@@ -5,36 +5,28 @@
 
 struct Money: Equatable {
     let currency: Currency
-    private let amount: Int
+    let amount: Float
 
-    init(amount: Int, currency: Currency) {
+    init(amount: Float, currency: Currency) {
         self.amount = amount
         self.currency = currency
     }
 
     func times(_ multiplier: Int) -> Money {
         return Money(
-            amount: self.amount * multiplier,
+            amount: self.amount * Float(multiplier),
             currency: self.currency
         )
     }
 
-    func addition(_ money: Money) -> Money {
-        return Money(
-            amount: self.amount + money.amount,
-            currency: self.currency
-        )
-    }
-
-    func exchange(
-        to currency: Currency,
-        by repository: CurrencyRateRepositoryProtocol
+    func addition(
+        _ money: Money,
+        by exchanger: MoneyExchangerProtocol
     ) -> Money {
-        let rate = repository.get(from: self.currency, to: currency)
+        let exchangedMoney = exchanger.exchange(money: money, toCurrency: self.currency)
         return Money(
-            //amount: self.amount * rate.value,
-            amount: self.amount,
-            currency: .dollar
+            amount: self.amount + exchangedMoney.amount,
+            currency: self.currency
         )
     }
 
@@ -43,6 +35,8 @@ struct Money: Equatable {
             && lhs.amount == rhs.amount
     }
 }
+
+
 
 
 //final class Dollar: MoneyProtocol {
