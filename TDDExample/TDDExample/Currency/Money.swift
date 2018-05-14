@@ -45,6 +45,36 @@ struct MoneyRateCalculator {
 }
 
 
+// Moneyをどう計算できるか、をMoenyの昨日としてもたせたい場合は
+// Money経由で計算を行えるするのが良いのだろうなと思う
+
+//struct Money: Equatable {
+//    let currency: Currency
+//    let amount: Float
+//
+//    init(amount: Float, currency: Currency) {
+//        self.amount = amount
+//        self.currency = currency
+//    }
+//
+//    func times(_ multiplier: Float) -> Money {
+//        return MoneyMultiply(money: self).reduce(multiplier)
+//    }
+//
+//    func plus(_ addend: Money, rateBy repository: CurrencyRateRepositoryProtocol) {
+//        return MoneySum(augend: self, addend: addend).reduce(rateBy: repository)
+//    }
+//
+//    func exchange(toCurrency: Currency, rateBy repository: CurrencyRateRepositoryProtocol) {
+//        return MoneyExchange(money: self).reduce(toCurrency: toCurrency, rateBy: repository)
+//    }
+//
+//    static func == (lhs: Money, rhs: Money) -> Bool {
+//        return lhs.currency == rhs.currency
+//            && lhs.amount == rhs.amount
+//    }
+//}
+//
 //struct MoneySum {
 //    let augend: Money
 //    let addend: Money
