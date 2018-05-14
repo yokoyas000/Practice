@@ -3,48 +3,6 @@
 // Copyright (c) 2018 ___FULLUSERNAME___. All rights reserved.
 //
 
-/**
- I部12章: 自分案
-
- Example:
-    let money = Money(amount: 5, currency: .dollar)
-    let exchanger = MoneyExchanger(
-        by: CurrentRateRepository(
-            with: CurrencyRateAPI()
-        )
-    )
-    let addedMoney = testMoney.plus(
-        Money(amount: 5, currency: .franc),
-        by: exchanger
-    )
- **/
-
-
-
-// - MARK: MoneyExchanger
-
-protocol MoneyExchangerProtocol {
-    func exchange(money: Money, toCurrency: Currency) -> Money
-}
-
-struct MoneyExchanger {
-    private let rateRepository: CurrencyRateRepositoryProtocol
-
-    init(by repository: CurrencyRateRepositoryProtocol) {
-        self.rateRepository = repository
-    }
-
-    func exchange(money: Money, toCurrency: Currency) -> Money {
-        let rate = self.rateRepository.get(from: money.currency, to: toCurrency)
-        return Money(
-            amount: money.amount * rate.value,
-            currency: toCurrency
-        )
-    }
-}
-
-
-
 // - MARK:　CurrencyRateRepository
 
 protocol CurrencyRateRepositoryProtocol {
