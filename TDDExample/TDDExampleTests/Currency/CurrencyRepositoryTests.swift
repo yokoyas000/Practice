@@ -33,15 +33,5 @@ extension CurrencyRepositoryTests {
             return self.rate
         }
 
-//    func createValue(from: Currency, to: Currency) -> Float {
-//        switch (from, to) {
-//        case (.dollar, .dollar), (.franc, .franc):
-//            return 1
-//        case (.dollar, .franc) :
-//            return 0.5
-//        case (.franc, .dollar) :
-//            return 2
-//        }
-//    }
     }
 }
