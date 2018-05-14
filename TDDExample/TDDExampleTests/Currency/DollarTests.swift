@@ -39,36 +39,52 @@ class DollarTests: XCTestCase {
 
     // レートを計算した上で足し算
     func testDollarAndFrancAddition() {
-        let testMoney = Money(amount: 5, currency: .dollar)
-
-        let actual = testMoney.addition(
-            Money(amount: 0, currency: .franc),
-            by: MoneyExchangerStub(money: Money(amount: 5, currency: .dollar))
+        let dollar = Money(amount: 5, currency: .dollar)
+        let franc = Money(amount: 10, currency: .franc)
+        let rateFrancToDollar: Float = 0.5
+        let result = dollar.plus(
+            franc,
+            rateBy: CurrencyRateRepositoryStub(rate: CurrencyRate(rateFrancToDollar))
         )
-        let expected = Money(amount: 10, currency: .dollar)
-        XCTAssertEqual(expected, actual)
+
+        XCTAssertEqual(Money(amount: 10, currency: .dollar), result)
+    }
+
+    // - [ ] 通貨の変換
+    func testMoneyExchange() {
+        let moneyAmount: Float = 5
+        let rate: Float = 2
+        let result = Money(amount: moneyAmount, currency: .dollar)
+            .exchange(
+                toCurrency: .franc,
+                rateBy: CurrencyRateRepositoryStub(rate: CurrencyRate(rate))
+            )
+        XCTAssertEqual(
+            Money(amount: moneyAmount * rate, currency: .franc),
+            result
+        )
     }
 
 }
 
-
-class MoneyExchangerTests: XCTestCase {
-    func testExchange() {
-        let testRateValue: Float = 2
-        let testMoney = Money(amount: 5, currency: .dollar)
-        let exchanger = MoneyExchanger(
-            by: CurrencyRateRepositoryStub(rate: CurrencyRate(testRateValue))
-        )
-        let testExchangeCurrency = Currency.franc
-
-        let expected = Money(
-            amount: testMoney.amount * testRateValue,
-            currency: testExchangeCurrency
+class MoneySumTests: XCTestCase {
+    func testReduce() {
+        let augend: Float = 2
+        let addend: Float = 4
+        let sum = MoneySum(
+            augend: Money(amount: augend, currency: .dollar),
+            addend: Money(amount: addend, currency: .franc)
         )
 
-        let actual = exchanger.exchange(money: testMoney, toCurrency: testExchangeCurrency)
+        let rateFranToDollar: Float = 2
+        let reduce = sum.reduce(
+            rateBy: CurrencyRateRepositoryStub(rate: CurrencyRate(rateFranToDollar))
+        )
 
-        XCTAssertEqual(expected, actual)
+        let expectedAmount = augend + (addend * rateFranToDollar)
+        XCTAssertEqual(
+            Money(amount: expectedAmount, currency: .dollar),
+            reduce
+        )
     }
-
 }

@@ -12,22 +12,16 @@ struct Money: Equatable {
         self.currency = currency
     }
 
-    func times(_ multiplier: Int) -> Money {
-        return Money(
-            amount: self.amount * Float(multiplier),
-            currency: self.currency
-        )
+    func times(_ multiplier: Float) -> Money {
+        return MoneyMultiply(money: self).reduce(multiplier)
     }
 
-    func addition(
-        _ money: Money,
-        by exchanger: MoneyExchangerProtocol
-    ) -> Money {
-        let exchangedMoney = exchanger.exchange(money: money, toCurrency: self.currency)
-        return Money(
-            amount: self.amount + exchangedMoney.amount,
-            currency: self.currency
-        )
+    func plus(_ addend: Money, rateBy repository: CurrencyRateRepositoryProtocol) -> Money {
+        return MoneySum(augend: self, addend: addend).reduce(rateBy: repository)
+    }
+
+    func exchange(toCurrency: Currency, rateBy repository: CurrencyRateRepositoryProtocol) -> Money {
+        return MoneyExchange(money: self).reduce(toCurrency: toCurrency, rateBy: repository)
     }
 
     static func == (lhs: Money, rhs: Money) -> Bool {
@@ -37,38 +31,31 @@ struct Money: Equatable {
 }
 
 
+struct MoneySum {
+    let augend: Money
+    let addend: Money
 
+    func reduce(rateBy repository: CurrencyRateRepositoryProtocol) -> Money {
+        let addendExchanged = addend.exchange(toCurrency: augend.currency, rateBy: repository)
+        return Money(amount: augend.amount + addendExchanged.amount, currency: augend.currency)
+    }
+}
 
-//final class Dollar: MoneyProtocol {
-//    let currency: String = "USD"
-//    private let amount: Int
-//
-//    init(amount: Int) {
-//        self.amount = amount
-//    }
-//
-//    func times(_ multiplier: Int) -> Dollar {
-//        return Dollar(amount: self.amount * multiplier)
-//    }
-//
-//    static func == (lhs: Dollar, rhs: Dollar) -> Bool {
-//        return lhs.amount == rhs.amount
-//    }
-//}
-//
-//final class Franc: MoneyProtocol {
-//    let currency: String = "CHF"
-//    private let amount: Int
-//
-//    init(amount: Int) {
-//        self.amount = amount
-//    }
-//
-//    func times(_ multiplier: Int) -> Franc {
-//        return Franc(amount: self.amount * multiplier)
-//    }
-//
-//    static func == (lhs: Franc, rhs: Franc) -> Bool {
-//        return lhs.amount == rhs.amount
-//    }
-//}
+struct MoneyExchange {
+    let money: Money
+
+    func reduce(toCurrency: Currency, rateBy repository: CurrencyRateRepositoryProtocol) -> Money {
+        let rate = repository.get(from: self.money.currency, to: toCurrency)
+        let amount = self.money.amount * rate.value
+        return Money(amount: amount, currency: toCurrency)
+    }
+}
+
+struct MoneyMultiply {
+    let money: Money
+
+    func reduce(_ multiplier: Float) -> Money {
+        let amount = self.money.amount * multiplier
+        return Money(amount: amount, currency: self.money.currency)
+    }
+}
