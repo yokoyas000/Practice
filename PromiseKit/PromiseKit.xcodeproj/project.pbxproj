@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35C029D4B83D5B7D78AF5285 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C02FD942908EFA9EF22901 /* Promise.swift */; };
+		35C02B7B28FDA01B0425A83A /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C028EBC976C580CBD39ED8 /* PromiseTests.swift */; };
 		3E15D70D20B2F5BB00919492 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E15D70320B2F5BA00919492 /* PromiseKit.framework */; };
 		3E15D71220B2F5BB00919492 /* PromiseKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E15D71120B2F5BB00919492 /* PromiseKitTests.swift */; };
 		3E15D71420B2F5BB00919492 /* PromiseKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E15D70620B2F5BA00919492 /* PromiseKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,6 +25,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		35C028EBC976C580CBD39ED8 /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseTests.swift; sourceTree = "<group>"; };
+		35C02FD942908EFA9EF22901 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		3E15D70320B2F5BA00919492 /* PromiseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PromiseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E15D70620B2F5BA00919492 /* PromiseKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PromiseKit.h; sourceTree = "<group>"; };
 		3E15D70720B2F5BA00919492 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,6 +77,7 @@
 			children = (
 				3E15D70620B2F5BA00919492 /* PromiseKit.h */,
 				3E15D70720B2F5BA00919492 /* Info.plist */,
+				35C02FD942908EFA9EF22901 /* Promise.swift */,
 			);
 			path = PromiseKit;
 			sourceTree = "<group>";
@@ -82,6 +87,7 @@
 			children = (
 				3E15D71120B2F5BB00919492 /* PromiseKitTests.swift */,
 				3E15D71320B2F5BB00919492 /* Info.plist */,
+				35C028EBC976C580CBD39ED8 /* PromiseTests.swift */,
 			);
 			path = PromiseKitTests;
 			sourceTree = "<group>";
@@ -194,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35C029D4B83D5B7D78AF5285 /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +209,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E15D71220B2F5BB00919492 /* PromiseKitTests.swift in Sources */,
+				35C02B7B28FDA01B0425A83A /* PromiseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
