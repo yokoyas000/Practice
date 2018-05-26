@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		35C02333FEEED2AA10F33899 /* Pattern1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C020A87AC2194734C1B38C /* Pattern1.swift */; };
+		35C02558FB2A7CBE2F038E50 /* Pattern2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C02F508375437001FB2A6F /* Pattern2.swift */; };
 		3EEBF74220BA0071008030F6 /* StateExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EEBF73820BA0071008030F6 /* StateExample.framework */; };
 		3EEBF74720BA0071008030F6 /* StateExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEBF74620BA0071008030F6 /* StateExampleTests.swift */; };
 		3EEBF74920BA0071008030F6 /* StateExample.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EEBF73B20BA0071008030F6 /* StateExample.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		35C020A87AC2194734C1B38C /* Pattern1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pattern1.swift; sourceTree = "<group>"; };
+		35C02F508375437001FB2A6F /* Pattern2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pattern2.swift; sourceTree = "<group>"; };
 		3EEBF73820BA0071008030F6 /* StateExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StateExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EEBF73B20BA0071008030F6 /* StateExample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StateExample.h; sourceTree = "<group>"; };
 		3EEBF73C20BA0071008030F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				3EEBF73B20BA0071008030F6 /* StateExample.h */,
 				3EEBF73C20BA0071008030F6 /* Info.plist */,
 				35C020A87AC2194734C1B38C /* Pattern1.swift */,
+				35C02F508375437001FB2A6F /* Pattern2.swift */,
 			);
 			path = StateExample;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 			files = (
 				3EEBF75320BA00ED008030F6 /* StateMachineCatalog.swift in Sources */,
 				35C02333FEEED2AA10F33899 /* Pattern1.swift in Sources */,
+				35C02558FB2A7CBE2F038E50 /* Pattern2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
