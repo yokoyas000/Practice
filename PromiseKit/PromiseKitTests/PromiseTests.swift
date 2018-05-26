@@ -42,7 +42,25 @@ class PromiseTests: XCTestCase {
         self.waitForExpectations(timeout: 3.0)
     }
 
-    func testThenWhenStateIsRejected() {
+    func testWhenStateIsFulfilled() {
+        let promise = Promise<Int> { resolve, _ in
+            resolve(0)
+        }
+
+        let e = self.expectation(description: "promise")
+
+        _ = promise.then { _ -> String in
+            return "string"
+        }.then { x in
+            XCTAssertEqual("string", x)
+            e.fulfill()
+        }.catch { _ in
+            XCTFail()
+        }
+
+        self.waitForExpectations(timeout: 3.0)
+    }
+
     func testWhenStateIsRejected() {
         let promise = Promise<Int> { _, reject in
             reject(PromiseError(message: "reject"))
