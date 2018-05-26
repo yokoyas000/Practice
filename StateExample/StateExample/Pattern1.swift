@@ -49,7 +49,7 @@ enum Pattern1 {
     }
 
 
-    // - MARK: 使用状況
+    // - MARK: 使用感
 
     struct UseCase {
         init() {
@@ -58,7 +58,7 @@ enum Pattern1 {
 
         func context() -> Context<SomeState, Event, String> {
             return Context<SomeState, Event, String> { (event: Event) -> Reducer<SomeState, String> in
-                return self.doSomething(by: event)
+                return self.invoke(by: event)
             }
         }
 
@@ -68,36 +68,39 @@ enum Pattern1 {
             print(state, output)
         }
 
-        private func doSomething(by event: Event) -> Reducer<SomeState, String> {
+        private func invoke(by event: Event) -> Reducer<SomeState, String> {
             switch event {
             case .doSimple:
-                return self.reducer()
+                return self.doSimple()
             }
         }
 
-        private func reducer() -> Reducer<SomeState, String> {
+        private func doSimple() -> Reducer<SomeState, String> {
             return Reducer<SomeState, String> { (state: SomeState) in
                 // MEMO: ドメイン処理はここ？
                 switch state {
-                case .first:
-                    return (.second, "something")
-                case .second:
-                    return (.first, "")
+                case .first, .processing:
+                    return (.processed, "something")
+                case .processed:
+                    return (.processed, "")
                 }
             }
         }
 
 
-        // - MARK:
+        // - MARK: 使用状況を想像しやすくするための諸々
 
         enum SomeState {
             case first
-            case second
+            case processing
+            case processed
         }
 
         enum Event {
             case doSimple
+            //case async
         }
+
     }
 
 }

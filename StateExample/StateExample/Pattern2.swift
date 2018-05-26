@@ -39,7 +39,10 @@ enum Pattern2 {
 
     struct UseCase {
         init() {
-            self.presenter(use: self.context())
+            let context = self.context()
+            self.presenter(observing: context)
+
+            context.transition(by: .doSimple)
         }
 
         func context() -> Context<SomeState, SomeEvent> {
@@ -59,9 +62,7 @@ enum Pattern2 {
             }
         }
 
-        func presenter(use context: Context<SomeState, SomeEvent>) {
-            // MEMO: ユーザー入力をどこかしらで受け取る
-            context.transition(by: .doSimple)
+        func presenter(observing context: Context<SomeState, SomeEvent>) {
             _ = context.didChange.subscribe(onNext: { _ in
                 // MEMO: UI更新(多分)
             })
