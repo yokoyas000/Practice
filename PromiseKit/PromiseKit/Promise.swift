@@ -6,42 +6,12 @@
 import Foundation
 
 public class Promise<T> {
+
     typealias FulfillCallback = (T) -> Void
     typealias RejectCallback = (Error) -> Void
 
-    public init(_ executor: (@escaping (T) -> Void, @escaping (Error) -> Void) -> Void) {
-        executor(self.onFulfilled, self.onRejected)
-    }
-
-    public func then<U>(_ onFulfilled: @escaping (T) -> U) -> Promise<U> {
-        switch self.currentState {
-        case .pending:
-            return Promise<U> { resolve, _ in
-                self.fulfillCallbacks.append { value -> Void in
-                    let result = onFulfilled(value)
-                    resolve(result)
-                }
-            }
-        case .fulfilled(let value):
-            let result = onFulfilled(value)
-            return Promise<U>.resolve(result)
-        case .rejected(let error):
-            return Promise<T>.reject(error)
-        }
-
-    }
-
-    public func `catch`(_ onRejected: @escaping (Error) -> Void) -> Promise<T> {
-        switch self.currentState {
-        case .pending, .fulfilled:
-            return Promise<T> { _, _ in
-                self.rejectCallbacks.append { error in
-                    onRejected(error)
-                }
-            }
-        case .rejected(let error):
-            return Promise<T>.reject(error)
-        }
+    public init( _ exec: (@escaping(T) -> Void, @escaping (Error) -> Void) -> Void) {
+        exec(self.onFulfilled, self.onRejected)
     }
 
     static func resolve<U>(_ value: U) -> Promise<U> {
@@ -50,7 +20,7 @@ public class Promise<T> {
         }
     }
 
-    static func reject<T>(_ error: Error) -> Promise<T> {
+    static func reject(_ error: Error) -> Promise<T> {
         return Promise<T> { _, reject in
             reject(error)
         }
@@ -58,9 +28,40 @@ public class Promise<T> {
 
     // - MARK: Private
 
-    private var currentState: State<T, Error> = .pending
+    private var currentState: PromiseState<T, Error> = .pending
     private var fulfillCallbacks: [FulfillCallback] = []
     private var rejectCallbacks: [RejectCallback] = []
+
+    public func then<U>(_ resolve: @escaping (T) -> U) -> Promise<U> {
+        switch self.currentState {
+        case .pending:
+            return Promise<U> { _resolve, _ in
+                self.fulfillCallbacks.append { (value: T) -> Void in
+                    let result: U = resolve(value)
+                    _resolve(result)
+                }
+            }
+        case .fulfilled(let value):
+            let result = resolve(value)
+            return Promise<U>.resolve(result)
+        case .rejected(let error):
+            return Promise<U>.reject(error)
+        }
+    }
+
+    public func `catch`(_ reject: @escaping (Error) -> Void) -> Promise<T> {
+        switch self.currentState {
+        case .pending, .fulfilled:
+            return Promise<T> { _, _ in
+                self.rejectCallbacks.append(reject)
+            }
+        case .rejected(let error):
+            reject(error)
+            return Promise<T>.reject(error)
+        }
+    }
+
+
 
     private func onFulfilled(value: T) {
         switch self.currentState {
@@ -84,20 +85,16 @@ public class Promise<T> {
         default:
             return
         }
+
     }
 }
 
 
 
-public enum State<T, E> {
+public enum PromiseState<T, E> {
     case pending
     case fulfilled(T)
     case rejected(E)
-
-    public enum Result {
-        case success(T)
-        case failure(E)
-    }
 }
 
 

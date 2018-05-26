@@ -8,7 +8,7 @@ import XCTest
 
 class PromiseTests: XCTestCase {
 
-    func testFulfill() {
+    func testFulfillWhenStateIsPending() {
         let promise = Promise<Int> { resolve, _ in
             DispatchQueue.main.async {
                 resolve(0)
@@ -17,7 +17,7 @@ class PromiseTests: XCTestCase {
 
         let e = self.expectation(description: "promise")
 
-        promise.then { x in
+        _ = promise.then { x in
             XCTAssertEqual(0, x)
             e.fulfill()
         }
@@ -25,7 +25,7 @@ class PromiseTests: XCTestCase {
         self.waitForExpectations(timeout: 3.0)
     }
 
-    func testReject() {
+    func testRejectWhenStateIsPending() {
         let promise = Promise<Int> { _, reject in
             DispatchQueue.main.async {
                 reject(PromiseError(message: "reject"))
@@ -34,7 +34,7 @@ class PromiseTests: XCTestCase {
 
         let e = self.expectation(description: "promise")
 
-        promise.catch { error in
+        _ = promise.catch { error in
             XCTAssertEqual("reject", (error as! PromiseError).message)
             e.fulfill()
         }
@@ -42,4 +42,21 @@ class PromiseTests: XCTestCase {
         self.waitForExpectations(timeout: 3.0)
     }
 
+    func testThenWhenStateIsRejected() {
+    func testWhenStateIsRejected() {
+        let promise = Promise<Int> { _, reject in
+            reject(PromiseError(message: "reject"))
+        }
+
+        let e = self.expectation(description: "promise")
+
+        _ = promise.then { _ in
+            XCTFail()
+        }.catch { error in
+            XCTAssertEqual("reject", (error as! PromiseError).message)
+            e.fulfill()
+        }
+
+        self.waitForExpectations(timeout: 3.0)
+    }
 }
